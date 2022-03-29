@@ -1,0 +1,14 @@
+{
+  "name": "fixto",
+  "homepage": "https://github.com/larktravel/fixto",
+  "version": "0.3.1",
+  "_release": "0.3.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.3.1",
+    "commit": "a8fde3cd246be7977aba3ba5539d815fb4614cab"
+  },
+  "_source": "https://github.com/larktravel/fixto.git",
+  "_target": "^0.3.1",
+  "_originalSource": "fixto"
+}

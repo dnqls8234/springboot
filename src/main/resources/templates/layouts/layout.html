@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<meta Http-Equiv="Cache" content="no-cache">
+	<meta Http-Equiv="Pragma-Control" content="no-cache">
+	<meta Http-Equiv="Cache-directive" Content="no-cache">
+	<meta Http-Equiv="Pragma-directive" Content="no-cache">
+	<meta Http-Equiv="Cache-Control" Content="no-cache">
+	<meta Http-Equiv="Pragma" Content="no-cache">
+	<meta Http-Equiv="Expires" Content="0">
+	<meta Http-Equiv="Pragma-directive: no-cache">
+	<meta Http-Equiv="Cache-directive: no-cache">
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/jquery/dist/jquery.min.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+	<script	th:src="@{/lib/bower_components/blueimp-file-upload/js/jquery.fileupload.js}"></script>
+	<script	th:src="@{/lib/bower_components/blueimp-file-upload/js/jquery.fileupload-process.js}"></script>
+	<script	th:src="@{/lib/bower_components/blueimp-file-upload/js/jquery.fileupload-image.js}"></script>
+	<script	th:src="@{/lib/bower_components/blueimp-file-upload/js/jquery.fileupload-validate.js}"></script>
+	<script	th:src="@{/lib/bower_components/blueimp-file-upload/js/jquery.fileupload-ui.js}"></script>
+	<script	th:src="@{/lib/bower_components/blueimp-file-upload/js/jquery.fileupload-jquery-ui.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/placeholders/dist/placeholders.min.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/fixto/dist/fixto.min.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/jquery-slimScroll/jquery.slimscroll.min.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/jquery-file-download/src/Scripts/jquery.fileDownload.js}"></script>
+	<script type="text/javascript"	th:src="@{/lib/bower_components/jquery-form/dist/jquery.form.min.js}"></script>
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/swiper-bundle.min.css}" />
+	<script type="text/javascript" th:src="@{/STATIC/js/common.js}"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/style.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/jquery.datetimepicker.min.css}"/>
+	<script type="text/javascript" th:src="@{/STATIC/js/jquery.datetimepicker.full.min.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content"></div>
+	
+		<input type="hidden" name="user_id" th:value="${user_id}">
+	<input type="hidden" name="user_type" th:value="${user_type}">
+	<input type="hidden" name="user_no" th:value="${id}">
+	
+
+	<form id="form" style="visibility:hidden"></form>
+</body>
+</html>

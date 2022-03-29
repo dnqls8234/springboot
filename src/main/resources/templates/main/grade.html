@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>등급설정</title>
+
+	<meta name="code" charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes"/>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="STATIC/js/common.js"></script>
+	<script type="text/javascript" src="STATIC/js/swiper-bundle.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="STATIC/css/jquery.datetimepicker.min.css"/>
+	<script type="text/javascript" src="STATIC/js/jquery.datetimepicker.full.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="STATIC/css/swiper-bundle.min.css"/>
+	<link rel="stylesheet" type="text/css" href="STATIC/css/style.css"/>
+
+</head>
+<body>
+	<header>
+		<div class="nav_trigger"></div>
+		<a href="/">Coperation</a>
+
+		<div class="info">
+				<div class="user" th:if="${user_type==100}">관리자</div>
+				<div class="user" th:if="${user_type==200}">사용자</div>
+				<div class="" style="margin-right: 15px"><a href="/logout">로그아웃</a></div>
+			</div>
+	</header>
+
+	<div class="container">
+
+		<div class="top-contents">
+			<div class="search-wrap">
+				<input type="" name="" class="inp-search" placeholder="입력후 엔터">
+			</div>
+			<div class="page-nav">
+				<a href="" class="home">Home</a>
+				<p>/ 등급설정 /</p>
+			</div>
+		</div>
+
+
+		<div class="desc-contents">
+			<div class="nav-sider">
+				<ul>
+					<li class="drop_mene"><a href="/member" class="icon-member">회원관리</a></li>
+					<li class="drop_mene"><a href="/purchase" class="icon-cart">구매내역</a></li>
+					<li class="drop_mene"><a href="/membersub" class="icon-update">업데이트</a></li>
+					<li class="drop_mene active"><a href="/grade" class="icon-chart">등급설정</a></li>
+					<th:blcok th:if="${user_type == 100}">
+					<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-chart">관리자</a></li>
+					</th:blcok>
+				</ul>
+			</div>
+			
+			<div class="title-box">
+				<h5 class="title">등급설정</h5>
+				<div class="screen-ctl">
+					<div class="fullscreen" onclick="openFullscreen()"></div>
+					<div class="reload" onclick="location.reload();"></div>
+					<div class="arrow_alt"></div>
+				</div>
+			</div>
+
+			<div class="contents">
+				<div class="grade-wrap">
+					<p class="title">등급설정</p>
+
+					<form action="memberGrade" method="post">
+						<div class="box">
+							<p class="title">가입날짜</p>
+							<div class="input-box">
+								<label>1등급</label>
+								<input type="date" name="dateFir">
+							</div>
+
+							<div class="input-box">
+								<label>2등급</label>
+								<input type="date" name="dateSec">
+							</div>
+
+							<div class="input-box">
+								<label>3등급</label>
+								<input type="date" name="dateThi">
+							</div>
+
+							<div class="input-box">
+								<label>4등급</label>
+								<input type="date" name="dateFou">
+							</div>
+
+							<div class="input-box">
+								<label>5등급</label>
+								<input type="date" name="dateFif">
+							</div>
+						</div>
+						<div class="box">
+							<p class="title">구매횟수</p>
+							<div class="input-box">
+								<label>1등급</label>
+								<input type="number" name="buyFir">
+							</div>
+
+							<div class="input-box">
+								<label>2등급</label>
+								<input type="number" name="buySec">
+							</div>
+
+							<div class="input-box">
+								<label>3등급</label>
+								<input type="number" name="buyThi">
+							</div>
+
+							<div class="input-box">
+								<label>4등급</label>
+								<input type="number" name="buyFou">
+							</div>
+
+							<div class="input-box">
+								<label>5등급</label>
+								<input type="number" name="buyFif">
+							</div>
+						</div>
+						<div class="btn-box">
+							<button type="submit">적용</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+<script type="text/javascript">
+
+	$(function(){
+
+	});
+
+</script>
+
+</html>

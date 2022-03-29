@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>관리자페이지</title>
+
+	<meta name="code" charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes"/>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" th:src="@{/STATIC/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/STATIC/js/swiper-bundle.min.js}"></script>
+
+	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/jquery.datetimepicker.min.css}"/>
+	<script type="text/javascript" th:src="@{/STATIC/js/jquery.datetimepicker.full.min.js}"></script>
+
+	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/swiper-bundle.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/style.css}"/>
+	<script th:src="@{/javascripts/main.js}"></script>
+<style type="text/css">
+#css_tabs {
+    font-family:'nanumgothic', '나눔고딕', 'malgun gothic', '맑은 고딕', 'dotum', '돋움', sans-serif;
+    display: inline;
+}
+/* 탭 선택 시 표시할 요소(div) 정의(1번 탭 선택 시 첫 번째 div 요소 표시) */
+#css_tabs input:nth-of-type(1), #css_tabs input:nth-of-type(1) ~ div:nth-of-type(1), #css_tabs input:nth-of-type(2), #css_tabs input:nth-of-type(2) ~ div:nth-of-type(2), #css_tabs input:nth-of-type(3), #css_tabs input:nth-of-type(3) ~ div:nth-of-type(3) {
+    display:none
+}
+#css_tabs input:nth-of-type(1):checked ~ div:nth-of-type(1), #css_tabs input:nth-of-type(2):checked ~ div:nth-of-type(2), #css_tabs input:nth-of-type(3):checked ~ div:nth-of-type(3) {
+    display:block
+}
+/* 라벨 기본 스타일 지정 */
+#css_tabs > label {
+    display:inline-block;
+    font-variant:small-caps;
+    font-size:.9em;
+    padding:5px;
+    text-align:center;
+    width:20%;
+    line-height:1.8em;
+    font-weight:700;
+    border-radius:3px 3px 0 0;
+    background:#eee;
+    color:#777;
+    border:1px solid #ccc;
+    border-width:1px 1px 0
+}
+#css_tabs > label:hover {
+    cursor:pointer
+}
+#css_tabs label[for=tab1] {
+    margin-left:1.5em
+}
+/* 선택된 라벨, 커서를 올린 라벨 스타일 지정 */
+#css_tabs input:nth-of-type(1):checked ~ label:nth-of-type(1), #css_tabs > label[for=tab1]:hover {
+    background:tomato;
+    color:#fff
+}
+#css_tabs input:nth-of-type(2):checked ~ label:nth-of-type(2), #css_tabs > label[for=tab2]:hover {
+    background:gold;
+    color:#fff
+}
+#css_tabs input:nth-of-type(3):checked ~ label:nth-of-type(3), #css_tabs > label[for=tab3]:hover {
+    background:green;
+    color:#fff
+}
+/* 실제 내용이 담긴 div 요소 스타일 지정 */
+#css_tabs .tab1_content, #css_tabs .tab2_content, #css_tabs .tab3_content {
+    padding:2em;
+    border:1px solid #ddd;
+    width:70%;
+    height:100%
+}
+</style>
+</head>
+
+<body>
+	<header>
+		<div class="nav_trigger"></div>
+		<a href="/">Coperation</a>
+
+		<div class="info">
+				<div class="user" th:if="${user_type==100}">관리자</div>
+				<div class="user" th:if="${user_type==200}">사용자</div>
+				<div class="" style="margin-right: 15px"><a href="/logout">로그아웃</a></div>
+			</div>
+	</header>
+
+	<div class="container">
+
+		<div class="top-contents">
+			<div class="search-wrap">
+				<input type="" name="" class="inp-search" placeholder="입력후 엔터">
+			</div>
+			<div class="page-nav">
+				<a href="" class="home">Home</a>
+				<p>/ 등급설정 /</p>
+			</div>
+		</div>
+
+
+		<div class="desc-contents">
+			<div class="nav-sider">
+				<ul>
+					<li class="drop_mene"><a href="/member" class="icon-member">회원관리</a></li>
+					<li class="drop_mene"><a href="/purchase" class="icon-cart">구매내역</a></li>
+					<li class="drop_mene"><a href="/membersub" class="icon-update">업데이트</a></li>
+					<li class="drop_mene"><a href="/grade" class="icon-chart">등급설정</a></li>
+					<th:blcok th:if="${user_type == 100}">
+					<li class="drop_mene active"><a href="/adminManager" class="icon-member">관리자</a></li>
+					</th:blcok>
+				</ul>
+			</div>
+			
+			<div class="title-box">
+				<div id="css_tabs">
+				    <input id="tab1" type="radio" name="tab" checked="checked" />
+				    <input id="tab2" type="radio" name="tab" />
+				    <input id="tab3" type="radio" name="tab" />
+				    <label for="tab1" onclick="location.href='/adminManager/phoneLog'">핸드폰 확인기록</label>
+				    <label for="tab2" onclick="location.href='/adminManager/userList'">사용자 확인</label>
+				    <label for="tab3" onclick="location.href='/adminManager'">사용자 만들기</label>
+				</div>
+<!-- 				<h5 class="title">사용자 만들기</h5> -->
+				<div class="screen-ctl">
+					<div class="fullscreen" onclick="openFullscreen()"></div>
+					<div class="reload" onclick="location.reload();"></div>
+					<div class="arrow_alt"></div>
+				</div>
+			</div>
+
+			<div class="contents">
+				<div class="data-table-wrap">
+						<table class="data-table buy-his-list sort-list" id="inventory">
+							<thead>
+								<tr>
+									<th onclick="sortTable(0)">No.</th>
+									<th onclick="sortTable(1)">아이디 
+										<span class="item"> 
+										<i class="icon_up"></i> <i class="icon_down"></i>
+										</span>
+									</th>
+									<th onclick="sortTable(2)">이름 
+										<span class="item">
+										<i class="icon_up"></i> <i class="icon_down"></i>
+										</span>
+									</th>
+									<th onclick="sortTable(3)">확인 날짜 
+										<span class="item"> 
+										<i class="icon_up"></i> <i class="icon_down"></i>
+										</span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:if="${list != null}">
+									<tr th:each="result, index : ${list}">
+										<td><span th:text="${list.size()-index.index}"></span></td>
+										<td><span th:text="${result.get('user_id')}"></span></td>
+										<td><span th:text="${result.get('user_name')}"></span></td>
+										<td>
+											<span th:text="${result.get('create_at') == null ? '-' : #dates.format(result.get('create_at'), 'yyyy-MM-dd HH:mm')}"></span>
+										</td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+
+			</div>
+		</div>
+	</div>
+	<input type="hidden" name="user_id" th:value="${user_id}">
+	<input type="hidden" name="user_type" th:value="${user_type}">
+	<input type="hidden" name="user_no" th:value="${id}">
+</body>
+
+</html>

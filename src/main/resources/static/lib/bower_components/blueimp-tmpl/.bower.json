@@ -1,0 +1,14 @@
+{
+  "name": "blueimp-tmpl",
+  "homepage": "https://github.com/blueimp/JavaScript-Templates",
+  "version": "3.14.0",
+  "_release": "3.14.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.14.0",
+    "commit": "9d8e01cb6cb7e00bf929d0719ad4ff322dc0836a"
+  },
+  "_source": "https://github.com/blueimp/JavaScript-Templates.git",
+  "_target": ">=2.5.4",
+  "_originalSource": "blueimp-tmpl"
+}

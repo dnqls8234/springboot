@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/layout">
+<head>
+	<title>구매내역</title>
+
+	<meta name="code" charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes"/>
+	<script th:src="@{/javascripts/purchase.js}"></script>
+
+</head>
+<body>
+<div layout:fragment="content" >
+	<header>
+		<div class="nav_trigger"></div>
+		<a href="/">Coperation</a>
+
+		<div class="info">
+				<div class="user" th:if="${user_type==100}">관리자</div>
+				<div class="user" th:if="${user_type==200}">사용자</div>
+				<div class="" style="margin-right: 15px"><a href="/logout">로그아웃</a></div>
+			</div>
+	</header>
+
+	<div class="container">
+
+		<div class="top-contents">
+			<div class="search-wrap">
+				<input type="" name="" class="inp-search" placeholder="입력후 엔터">
+			</div>
+			<div class="page-nav">
+				<a href="" class="home">Home</a>
+				<p>/ 구매내역 /</p>
+			</div>
+			<p class="today" id="clock">MM월 DD일 [토] 1:54:03</p>
+		</div>
+
+
+		<div class="desc-contents">
+			<div class="nav-sider">
+				<ul>
+					<li class="drop_mene"><a href="member" class="icon-member">회원관리</a></li>
+					<li class="drop_mene active"><a href="purchase" class="icon-cart">구매내역</a></li>
+					<li class="drop_mene"><a href="membersub" class="icon-update">업데이트</a></li>
+					<li class="drop_mene"><a href="grade" class="icon-chart">등급설정</a></li>
+					<th:blcok th:if="${user_type == 100}">
+						<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-chart">관리자</a></li>
+						</th:blcok>
+				</ul>
+			</div>
+			
+			<div class="title-box">
+				<h5 class="title">구매내역</h5>
+				<div class="screen-ctl">
+					<div class="fullscreen" onclick="openFullscreen()"></div>
+					<div class="reload" onclick="location.reload();"></div>
+					<div class="arrow_alt"></div>
+				</div>
+			</div>
+
+			<div class="contents">
+
+				<div class="search-inp-wrap">
+					<form action="purchase" method="post">
+						<div class="input-box calendar-box">
+							<input name="select_date" id="datetimepicker2" class="inp-calender" type="text" data-target="#datetimepicker2" placeholder="날짜 선택" th:value="${param.select_date == null ? 'All' : param.select_date}" />
+							<label class="icon-calendar" for="datetimepicker2"></label>
+						</div>
+								<input type="hidden" name="search" value="true">
+								<input type="hidden" name="search_grade" th:value="${param.search_grade}">
+								<input type="hidden" name="search_date" th:value="${param.search_date}">
+						<div class="input-box">
+							<select name="search_field">
+								<option value="id" th:selected="${#strings.equals(param.search_field, 'id')}">아이디</option>
+								<option value="name" th:selected="${#strings.equals(param.search_field, 'name')}">부본사</option>
+								<option value="place" th:selected="${#strings.equals(param.search_field, 'place')}">대리점</option>
+							</select>
+							<input type="text" name="search_text" class="inp-id" style="width: 200px" th:value="${param.search_text}"/>
+						</div>
+
+						<div class="input-box">
+							<select name="search_if">
+								<option value="id" th:selected="${#strings.equals(param.search_if, 'id')}">조건1</option>
+								<option value="name" th:selected="${#strings.equals(param.search_if, 'name')}">조건2</option>
+								<option value="place" th:selected="${#strings.equals(param.search_if, 'place')}">조건3</option>
+							</select>
+							<input type="text" name="search_if_text" class="inp-id" style="width: 200px" th:value="${param.search_if_text}"/>
+						</div>
+
+						<button>검색</button>
+						<div class="btn" style="padding: 0 0 0 0"><a href="/purchase" class="btn">초기화</a></div>
+					</form>
+					
+					<form id="excel_form" style="display: none">
+							<th:block th:each="map : ${param}">
+								<input type="hidden" th:name="${map.key}"
+									th:value="${map.value[0]}">
+							</th:block>
+						</form>
+					
+					<form id="excelUpForm" method="post" action="/purchase/compExcelUpload"
+							role="form" style="display: none" enctype="multipart/form-data">
+							<input id="excel" name="excel" class="file" type="file" multiple
+								data-show-upload="false" style="display: none"
+								data-show-caption="true" onchange="check()" />
+						</form>
+						<div class="btn btn-exdownload btn-download"
+							onclick="excelbuttom()">엑셀 업로드</div>
+						&nbsp;
+
+						<div class="btn btn-exdownload btn-download"
+							onclick="download_excel()">엑셀 다운로드</div>
+				</div>
+				
+				<div class="data-table-wrap">
+					<table class="data-table buy-his-list">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>본사정보</th>
+								<th>부본사</th>
+								<th>대리점</th>
+								<th>매장</th>
+								<th>등급</th>
+								<th>아이디</th>
+								<th>이름</th>
+								<th>구매금액</th>
+								<th>구매일</th>
+							</tr>
+						</thead>
+						<th:block th:if="${list != null}">
+							<tr th:each="result, index : ${list}">
+								<td th:text="${result.get('user_no')}">
+										<span ></span>
+									</td>
+									<td>
+										<span th:text="${result.get('base')}"></span>
+									</td>
+									<td>
+										<span th:text="${result.get('base_sub')}"></span>
+									</td>
+									<td>
+										<span th:text="${result.get('agency')}"></span>
+									</td>
+									<td>
+										<span th:text="${result.get('store')}"></span>
+									</td> 
+									<td>
+										<span th:text="${result.get('user_grade')}"></span>
+									</td>
+									<td>
+										<span th:text="${result.get('user_id')}"></span>
+									</td>
+									<td>
+										<span th:text="${result.get('user_name')}"></span>
+									</td>
+									<td style="float: right">
+										<span th:text="${result.get('buy_price') == 0 ? '-' : #numbers.formatInteger(result.get('buy_price'), 0, 'COMMA') + '원'}"></span>
+									</td>
+									<td>
+										<span th:text="${result.get('buy_at') == null ? '-' : #dates.format(result.get('buy_at'), 'yyyy-MM-dd HH:mm')}"></span>
+									</td>
+							</tr>
+						</th:block>
+					</table>
+
+					<div class="pagenate-wrap">
+						<form action="purchase" method="post" id="paging">
+							<input type="hidden" name="select_date" th:value="${param.select_date}" >
+							<input type="hidden" name="search_field" th:value="${param.search_field}" >
+							<input type="hidden" name="search_text" th:value="${param.search_text}" >
+							<input type="hidden" name="search_if" th:value="${param.search_if}" >
+							<input type="hidden" name="search_if_text" th:value="${param.search_if_text}" >
+							<input type="hidden" name="search" value="true">
+							<input type="hidden" name="page_no" th:value="${param.page_no}" >
+						<ul class="pagenate">
+							<li class="page-next" th:data-no="${param.page_no}" th:onclick="paging(this.getAttribute('data-no'),'pre')"></li>
+							<th:block th:each="result, index : ${pageList}">
+							<li th:class="${#strings.equals(#strings.isEmpty(param.page_no) ? 1 : param.page_no  ,result)} ? 'active' : ''" th:onclick="|paging(${result},${result})|" th:text="${result}"></li>
+							</th:block>
+							<li class="page-prev" th:data-no="${param.page_no}" th:onclick="paging(this.getAttribute('data-no'),'next')"></li>
+						</ul>
+
+						<select name="page_row" onchange="paging()">
+							<option value="30" th:selected="${#strings.equals(param.page_row, '30')}">30</option>
+							<option value="50" th:selected="${#strings.equals(param.page_row, '50')}">50</option>
+							<option value="100" th:selected="${#strings.equals(param.page_row, '100')}">100</option>
+						</select>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

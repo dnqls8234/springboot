@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mainDao">
+	
+	<insert id="insert">
+		INSERT INTO user
+			VALUES(
+				#{noid},
+				#{location},
+				#{id},
+				#{name},
+				#{grade},
+				#{phone},
+				#{register_at},
+				#{recent_at},
+				#{detail},
+				#{update_at}
+			)
+	</insert>
+	
+	<select id="findByid" resultType="string">
+		SELECT user_phone FROM user_datas
+		 WHERE id = #{id}
+	</select>
+	
+	<select id="search" resultType="hashmap">
+		SELECT * FROM (SELECT *,MAX(buy_at) FROM user_datas GROUP BY user_no) a
+		<where>
+		 <if test="@com.homepage.demo.component.MybatisUtils@notEmpty(search_text)">
+         	<choose>
+         		<when test="search_field == 'user_id'">
+          		 AND user_id LIKE CONCAT('%',#{search_text},'%')
+         		</when>
+         		<when test="search_field == 'user_phone'">
+           		 AND user_phone LIKE CONCAT('%',#{search_text},'%')
+         		</when>
+         	</choose>
+         </if>
+         <if test="@com.homepage.demo.component.MybatisUtils@notEmpty(search_grade)">
+         	<choose>
+         	<when test="search_grade == 1">
+		 	  AND user_grade LIKE CONCAT('%','1등급','%')
+			</when>
+			<when test="search_grade == 2">
+		  	  AND user_grade LIKE CONCAT('%','2등급','%')
+			</when>
+			<when test="search_grade == 3">
+		  	  AND user_grade LIKE CONCAT('%','3등급','%')
+			</when>
+			<when test="search_grade == 4">
+		  	  AND user_grade LIKE CONCAT('%','4등급','%')
+			</when>
+			<when test="search_grade == 5">
+		  	  AND user_grade LIKE CONCAT('%','5등급','%')
+			</when>
+         	</choose>
+         </if>
+         <if test="@com.homepage.demo.component.MybatisUtils@notEmpty(search_date)">
+         	<choose>
+         	<when test="search_date == 3">
+		 	  AND buy_at <![CDATA[<=]]> DATE_ADD(NOW(), INTERVAL -3 DAY)
+			</when>
+			<when test="search_date == 7">
+		  	  AND buy_at <![CDATA[<=]]> DATE_ADD(NOW(), INTERVAL -7 DAY)
+			</when>
+			<when test="search_date == 15">
+		  	  AND buy_at <![CDATA[<=]]> DATE_ADD(NOW(), INTERVAL -15 DAY)
+			</when>
+         	</choose>
+         </if>
+         <if test="@com.homepage.demo.component.MybatisUtils@notEmpty(select_date)">
+				AND buy_at BETWEEN CAST(CONCAT(REPLACE(#{select_date},'.','-'),'
+				00:00:00') AS DATETIME) AND
+				CAST(CONCAT(REPLACE(#{select_date},'.','-'),' 23:59:59') AS DATETIME)
+		 </if>
+         </where>
+         LIMIT #{start} , #{page_row}
+	</select>
+	
+	
+</mapper>
