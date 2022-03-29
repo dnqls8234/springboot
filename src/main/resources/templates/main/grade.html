@@ -3,31 +3,37 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title>등급설정</title>
+<title>등급설정</title>
 
-	<meta name="code" charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes"/>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="STATIC/js/common.js"></script>
-	<script type="text/javascript" src="STATIC/js/swiper-bundle.min.js"></script>
+<meta name="code" charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes" />
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="STATIC/js/common.js"></script>
+<script type="text/javascript" src="STATIC/js/swiper-bundle.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="STATIC/css/jquery.datetimepicker.min.css"/>
-	<script type="text/javascript" src="STATIC/js/jquery.datetimepicker.full.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="STATIC/css/jquery.datetimepicker.min.css" />
+<script type="text/javascript"
+	src="STATIC/js/jquery.datetimepicker.full.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="STATIC/css/swiper-bundle.min.css"/>
-	<link rel="stylesheet" type="text/css" href="STATIC/css/style.css"/>
+<link rel="stylesheet" type="text/css"
+	href="STATIC/css/swiper-bundle.min.css" />
+<link rel="stylesheet" type="text/css" href="STATIC/css/style.css" />
 
 </head>
 <body>
 	<header>
 		<div class="nav_trigger"></div>
-		<a href="/">Coperation</a>
+		<a >Coperation</a>
 
 		<div class="info">
-				<div class="user" th:if="${user_type==100}">관리자</div>
-				<div class="user" th:if="${user_type==200}">사용자</div>
-				<div class="" style="margin-right: 15px"><a href="/logout">로그아웃</a></div>
+			<div class="user" th:if="${user_type==100}">관리자</div>
+			<div class="user" th:if="${user_type==200}">사용자</div>
+			<div class="" style="margin-right: 15px">
+				<a href="/logout">로그아웃</a>
 			</div>
+		</div>
 	</header>
 
 	<div class="container">
@@ -49,13 +55,15 @@
 					<li class="drop_mene"><a href="/member" class="icon-member">회원관리</a></li>
 					<li class="drop_mene"><a href="/purchase" class="icon-cart">구매내역</a></li>
 					<li class="drop_mene"><a href="/membersub" class="icon-update">업데이트</a></li>
-					<li class="drop_mene active"><a href="/grade" class="icon-chart">등급설정</a></li>
+					<li class="drop_mene active"><a href="/grade"
+						class="icon-chart">등급설정</a></li>
 					<th:blcok th:if="${user_type == 100}">
-					<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-chart">관리자</a></li>
+						<li class="drop_mene"><a href="/adminManager/phoneLog"
+							class="icon-member">관리자</a></li>
 					</th:blcok>
 				</ul>
 			</div>
-			
+
 			<div class="title-box">
 				<h5 class="title">등급설정</h5>
 				<div class="screen-ctl">
@@ -69,63 +77,54 @@
 				<div class="grade-wrap">
 					<p class="title">등급설정</p>
 
-					<form action="memberGrade" method="post">
+					<form name=frm1 action="grade/memberGrade" method="post">
 						<div class="box">
 							<p class="title">가입날짜</p>
 							<div class="input-box">
-								<label>1등급</label>
-								<input type="date" name="dateFir">
+								<label>1등급</label> <input type="date" name="dateFir">
 							</div>
 
 							<div class="input-box">
-								<label>2등급</label>
-								<input type="date" name="dateSec">
+								<label>2등급</label> <input type="date" name="dateSec">
 							</div>
 
 							<div class="input-box">
-								<label>3등급</label>
-								<input type="date" name="dateThi">
+								<label>3등급</label> <input type="date" name="dateThi">
 							</div>
 
 							<div class="input-box">
-								<label>4등급</label>
-								<input type="date" name="dateFou">
+								<label>4등급</label> <input type="date" name="dateFou">
 							</div>
 
 							<div class="input-box">
-								<label>5등급</label>
-								<input type="date" name="dateFif">
+								<label>5등급</label> <input type="date" name="dateFif">
 							</div>
 						</div>
 						<div class="box">
 							<p class="title">구매횟수</p>
 							<div class="input-box">
-								<label>1등급</label>
-								<input type="number" name="buyFir">
+								<label>1등급</label> <input type="number" name="buyFir">
 							</div>
 
 							<div class="input-box">
-								<label>2등급</label>
-								<input type="number" name="buySec">
+								<label>2등급</label> <input type="number" name="buySec">
 							</div>
 
 							<div class="input-box">
-								<label>3등급</label>
-								<input type="number" name="buyThi">
+								<label>3등급</label> <input type="number" name="buyThi">
 							</div>
 
 							<div class="input-box">
-								<label>4등급</label>
-								<input type="number" name="buyFou">
+								<label>4등급</label> <input type="number" name="buyFou">
 							</div>
 
 							<div class="input-box">
-								<label>5등급</label>
-								<input type="number" name="buyFif">
+								<label>5등급</label> <input type="number" name="buyFif">
 							</div>
 						</div>
 						<div class="btn-box">
-							<button type="submit">적용</button>
+							<button type="button" onclick="check()">적용</button>
+							<!-- <input type="button" value="적용" onclick="check()"> -->
 						</div>
 					</form>
 				</div>
@@ -138,11 +137,42 @@
 </body>
 
 <script type="text/javascript">
-
-	$(function(){
-
-	});
-
+	function check() {
+		theForm = document.frm1;
+		if (theForm.dateFir.value == "") {
+			alert("가입날짜 1등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.dateFir.focus();
+		} else if (theForm.dateSec.value == "") {
+			alert("가입날짜 2등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.dateSec.focus();
+		} else if (theForm.dateThi.value == "") {
+			alert("가입날짜 3등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.dateThi.focus();
+		} else if (theForm.dateFou.value == "") {
+			alert("가입날짜 4등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.dateFou.focus();
+		} else if (theForm.dateFif.value == "") {
+			alert("가입날짜 5등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.dateFif.focus();
+		} else if (theForm.buyFir.value == "") {
+			alert("구매횟수 1등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.buyFir.focus();
+		} else if (theForm.buySec.value == "") {
+			alert("구매횟수 2등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.buySec.focus();
+		} else if (theForm.buyThi.value == "") {
+			alert("구매횟수 3등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.buyThi.focus();
+		} else if (theForm.buyFou.value == "") {
+			alert("구매횟수 4등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.buyFou.focus();
+		} else if (theForm.buyFif.value == "") {
+			alert("구매횟수 5등급 조건이 비었습니다.확인해 주세요.");
+			return theForm.buyFif.focus();
+		} else {
+			theForm.submit();
+		}
+	}
 </script>
 
 </html>

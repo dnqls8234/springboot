@@ -14,10 +14,22 @@
 	
 	<select id="findUserList" resultType="hashmap">
 		SELECT * FROM manager ORDER BY create_at desc
+		 LIMIT #{start} , #{page_row}
+	</select>
+
+	<select id="findUserListCnt" resultType="int">
+		SELECT COUNT(*) FROM 
+		(SELECT * FROM manager ) a 
 	</select>
 	
 	<select id="findPhoneLog" resultType="hashmap">
 		SELECT * FROM phone_check_log ORDER BY create_at desc
+		 LIMIT #{start} , #{page_row}
+	</select>
+	
+	<select id="findPhoneLogCnt" resultType="int">
+		SELECT COUNT(*) FROM 
+		(SELECT * FROM phone_check_log ) a
 	</select>
 	
 	<insert id="userLogInsert">

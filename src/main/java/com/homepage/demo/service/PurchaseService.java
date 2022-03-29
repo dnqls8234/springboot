@@ -43,11 +43,24 @@ public class PurchaseService {
 			HttpServletRequest request,
 			HttpServletResponse response
 		) throws Exception {
-		List<Map<String, Object>> results = pruchaseDao.getPurchases(params);
+		List<Map<String, Object>> results = new ArrayList<Map<String,Object>>();
+		
+		Map<String, Object> sampleMap = new HashMap<String, Object>();
+		sampleMap.put("base","ex) 서울");		
+		sampleMap.put("base_sub","ex) 서울");		
+		sampleMap.put("agency","ex) 서울");		
+		sampleMap.put("store","ex) 서울");		
+		sampleMap.put("user_grade","ex)  x등급");		
+		sampleMap.put("user_id","ex) test001");		
+		sampleMap.put("user_name","ex) 홍길동");		
+		sampleMap.put("buy_price","ex) 100000");	
+		sampleMap.put("buy_at","ex) 20xx-xx-xx xx:xx");	
+		results.add(sampleMap);
+				
+		results.addAll(pruchaseDao.getPurchases(params));
 		
 		String[][] headers = new String[][] {
 			new String[] {
-				"번호",
 				"본사정보",
 				"부본사",
 			    "대리점",
@@ -61,7 +74,6 @@ public class PurchaseService {
 		};
 		
 		String[] keys = new String[] {
-				"user_no",
 				"base",
 				"base_sub",
 				"agency",
@@ -107,7 +119,7 @@ public class PurchaseService {
 				// row 탐색 for문
 				for (int rowIndex = 0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
 					// row 0은 헤더정보이기 때문에 무시
-					if (rowIndex != 0) {
+					if (rowIndex != 0 && rowIndex != 1) {
 						curRow = curSheet.getRow(rowIndex);
 						vo = new HashMap<String,Object>();
 						String value;
@@ -153,36 +165,37 @@ public class PurchaseService {
 
 										// 현재 colum index에 따라서 vo입력
 										switch (cellIndex) {
-										case 0: // No
-											vo.put("user_no", value);
-											break;
-										case 1: // 본사
+										case 0: // 본사
 											vo.put("base", value);
 											break;
-										case 2: // 부본사
+										case 1: // 부본사
 											vo.put("base_sub", value);
 											break;
-										case 3: // 대리점
+										case 2: // 대리점
 											vo.put("agency", value);
 											break;
-										case 4: // 매장
+										case 3: // 매장
 											vo.put("store", value);
 											break;
-										case 5: // 등급
+										case 4: // 등급
 											vo.put("user_grade", value);
 											break;
-										case 6: // 아이디
+										case 5: // 아이디
 											vo.put("user_id", value);
 											break;
-										case 7: // 이름
-											vo.put("user_name", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
+										case 6: // 이름
+											vo.put("user_name", value);
 											break;
-										case 8: // 구매금액
+										case 7: // 구매금액
 											vo.put("buy_price", value);
 											break;
-										case 9: // 구매일
-											vo.put("buy_at", value);
-											break;
+										case 8: // 구매일
+											if(value != null && !value.equals("") && !value.equals("false")) {
+												vo.put("buy_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
+												break;
+											} else {
+												break;
+											}
 										default:
 											break;
 										}
@@ -231,7 +244,7 @@ public class PurchaseService {
 				// row 탐색 for문
 				for (int rowIndex = 0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
 					// row 0은 헤더정보이기 때문에 무시
-					if (rowIndex != 0) {
+					if (rowIndex != 0 && rowIndex != 1) {
 						curRow = curSheet.getRow(rowIndex);
 						vo = new HashMap<String,Object>();
 						String value;
@@ -282,36 +295,37 @@ public class PurchaseService {
 
 										// 현재 colum index에 따라서 vo입력
 										switch (cellIndex) {
-										case 0: // No
-											vo.put("user_no", value);
-											break;
-										case 1: // 본사
+										case 0: // 본사
 											vo.put("base", value);
 											break;
-										case 2: // 부본사
+										case 1: // 부본사
 											vo.put("base_sub", value);
 											break;
-										case 3: // 대리점
+										case 2: // 대리점
 											vo.put("agency", value);
 											break;
-										case 4: // 매장
+										case 3: // 매장
 											vo.put("store", value);
 											break;
-										case 5: // 등급
+										case 4: // 등급
 											vo.put("user_grade", value);
 											break;
-										case 6: // 아이디
+										case 5: // 아이디
 											vo.put("user_id", value);
 											break;
-										case 7: // 이름
+										case 6: // 이름
 											vo.put("user_name", value);
 											break;
-										case 8: // 구매금액
+										case 7: // 구매금액
 											vo.put("buy_price", value);
 											break;
-										case 9: // 구매일
-											vo.put("buy_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
-											break;
+										case 8: // 구매일
+											if(value != null && !value.equals("") && !value.equals("false")) {
+												vo.put("buy_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
+												break;
+											} else {
+												break;
+											}
 										default:
 											break;
 										}

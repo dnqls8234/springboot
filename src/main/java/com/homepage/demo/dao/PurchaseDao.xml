@@ -31,6 +31,44 @@
 			)
 	</insert>
 	
+	<sql id="selectSql">
+		SELECT *
+		FROM purchase
+		<where>
+			<if test="@com.homepage.demo.component.MybatisUtils@notEmpty(search_text)">
+				<choose>
+					<when test="search_field == 'id'">
+						AND id LIKE CONCAT('%',#{search_text},'%')
+					</when>
+					<when test="search_field == 'base_sub'">
+						AND base_sub LIKE CONCAT('%',#{search_text},'%')
+					</when>
+					<when test="search_field == 'agency'">
+						AND agency LIKE CONCAT('%',#{search_text},'%')
+					</when>
+				</choose>
+			</if>
+			<!-- <if test="@com.homepage.demo.component.MybatisUtils@notEmpty(search_if_text)"> -->
+			<!-- <choose> -->
+			<!-- <when test="search_if == 1"> -->
+			<!-- AND grade LIKE CONCAT('%',#{search_if_text},'%') -->
+			<!-- </when> -->
+			<!-- <when test="search_if == 2"> -->
+			<!-- AND grade LIKE CONCAT('%',#{search_if_text},'%') -->
+			<!-- </when> -->
+			<!-- <when test="search_if == 3"> -->
+			<!-- AND grade LIKE CONCAT('%',#{search_if_text},'%') -->
+			<!-- </when> -->
+			<!-- </choose> -->
+			<!-- </if> -->
+			<if test="@com.homepage.demo.component.MybatisUtils@notEmpty(select_date)">
+				AND buy_at BETWEEN CAST(CONCAT(REPLACE(#{select_date},'.','-'),'
+				00:00:00') AS DATETIME) AND
+				CAST(CONCAT(REPLACE(#{select_date},'.','-'),' 23:59:59') AS DATETIME)
+			</if>
+		</where>
+	</sql>
+	
 	<select id="getPurchases" resultType="hashmap">
 		SELECT *
 		FROM purchase
@@ -67,7 +105,13 @@
 				CAST(CONCAT(REPLACE(#{select_date},'.','-'),' 23:59:59') AS DATETIME)
 			</if>
 		</where>
+		ORDER BY id desc
 		LIMIT #{start} , #{page_row}
+	</select>
+	
+	<select id="searchCnt" resultType="int">
+		SELECT COUNT(*) FROM 
+		(<include refid="selectSql"></include>) a
 	</select>
 
 </mapper>

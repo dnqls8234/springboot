@@ -85,7 +85,7 @@
 						<li class="drop_mene"><a href="membersub" class="icon-update">업데이트</a></li>
 						<li class="drop_mene"><a href="grade" class="icon-chart">등급설정</a></li>
 						<th:blcok th:if="${user_type == 100}">
-						<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-chart">관리자</a></li>
+						<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-member">관리자</a></li>
 						</th:blcok>
 					</ul>
 				</div>
@@ -154,7 +154,7 @@
 						</form>
 
 
-						<form id="excelUpForm" method="post" action="compExcelUpload"
+						<form id="excelUpForm" method="post" action="/member/compExcelUpload"
 							role="form" style="display: none" enctype="multipart/form-data">
 							<input id="excel" name="excel" class="file" type="file" multiple
 								data-show-upload="false" style="display: none"
@@ -170,14 +170,12 @@
 						<div class="pagenate-wrap">
 							<form action="member" method="post" id="paging">
 								<input type="hidden" name="select_date" th:value="${param.select_date}">
-								<input type="hidden" name="search_field"
-									th:value="${param.search_field}"> <input type="hidden"
-									name="search_text" th:value="${param.search_text}"> <input
-									type="hidden" name="search_grade"
-									th:value="${param.search_grade}"> <input type="hidden"
-									name="search_date" th:value="${param.search_date}"> <input
-									type="hidden" name="search" value="true"> <input
-									type="hidden" name="page_no" th:value="${param.page_no}">
+								<input type="hidden" name="search_field" th:value="${param.search_field}"> 
+								<input type="hidden" name="search_text" th:value="${param.search_text}"> 
+								<input type="hidden" name="search_grade" th:value="${param.search_grade}"> 
+								<input type="hidden" name="search_date" th:value="${param.search_date}"> 
+								<input type="hidden" name="search" value="true"> 
+								<input	type="hidden" name="page_no" th:value="${param.page_no}">
 								<ul class="pagenate">
 									<li class="page-next" th:data-no="${param.page_no}"
 										th:onclick="paging(this.getAttribute('data-no'),'pre')"></li>
@@ -236,16 +234,22 @@
 							<tbody>
 								<th:block th:if="${list != null}">
 									<tr th:each="result, index : ${list}">
-										<td><span th:text="${result.get('user_no')}"></span></td>
+										<td><span th:text="${listCnt - (index.index + pageCnt)}"></span></td>
 										<td><span th:text="${result.get('base')}"></span></td>
 										<td><span th:text="${result.get('user_id')}"></span></td>
 										<td><span th:text="${result.get('user_name')}"></span></td>
 										<td><span th:text="${result.get('user_grade')}"></span></td>
+										<th:block th:if="${result.get('user_phone') != null}">
 										<td class="in-item"><span class="scphone"
 											th:id="|scphone${index.index}|"
 											th:text="${result.get('user_phone')}">1</span><a
 											th:onclick="|show(${index.index},${result.get('id')})|"
-											class="item">보기</a></td>
+											class="item">보기</a>
+										</td>
+										</th:block>
+										<th:blcok th:if="${result.get('user_phone') == null}">
+										<td></td>
+										</th:blcok>
 										<td><span
 											th:text="${result.get('register_at') == null ? '-' : #dates.format(result.get('register_at'), 'yyyy-MM-dd HH:mm')}"></span>
 										</td>

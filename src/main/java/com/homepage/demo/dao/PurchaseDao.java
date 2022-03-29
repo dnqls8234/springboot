@@ -22,5 +22,10 @@ public class PurchaseDao extends DefualtRepository{
 		}
 		
 	}
+
+	public Integer searchCnt(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("PuchaseDao.searchCnt", params);
+	}
 	
 }

@@ -55,6 +55,8 @@ public class MainSubController extends SessionController{
 		if(page_row == null) page_row = 30;
 		if(page_no == null) page_no = 1; 
 		
+		model.addAttribute("pageCnt", (page_no-1)*page_row);
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		if(select_date != null) {
@@ -74,6 +76,8 @@ public class MainSubController extends SessionController{
 		
 		list = mainSubDao.search(params);
 		
+		Integer listCnt = mainSubDao.searchCnt(params);
+		
 		page_no = (page_no-1)/5;
 		
 		List<Integer> pageList = new ArrayList<Integer>();
@@ -83,6 +87,8 @@ public class MainSubController extends SessionController{
 		
 		model.addAttribute("pageList", pageList);
 		model.addAttribute("list", list); 
+		model.addAttribute("listCnt", listCnt); 
+		
 		
 		return "main/membersub";
 	}

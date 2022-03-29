@@ -31,7 +31,7 @@ public class LoginController {
 	
 	@GetMapping
 	public String index(Locale locale, Model model) {
-		return "test";
+		return "login";
 	}
 	
 	@PostMapping("login/login")

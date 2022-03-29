@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.homepage.demo.dao.AdminDao;
 import com.homepage.demo.dao.MainDao;
 import com.homepage.demo.service.AdminAccountsMngService;
 import com.homepage.demo.service.UserLogService;
@@ -43,6 +44,9 @@ public class MainController extends SessionController{
 	@Autowired
 	MainDao mainDao;
 	
+	@Autowired
+	AdminDao adminDao;
+	
 	@RequestMapping
 	public String index(Model model,
 			@RequestParam(required = false) String search,
@@ -59,6 +63,8 @@ public class MainController extends SessionController{
 		
 		if(page_row == null) page_row = 30;
 		if(page_no == null) page_no = 1; 
+		
+		model.addAttribute("pageCnt", (page_no-1)*page_row);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -79,6 +85,8 @@ public class MainController extends SessionController{
 			
 		list = mainDao.search(params);
 		
+		Integer listCnt = mainDao.searchCnt(params);
+		
 		page_no = (page_no-1)/5;
 		
 		List<Integer> pageList = new ArrayList<Integer>();
@@ -88,6 +96,8 @@ public class MainController extends SessionController{
 		
 		model.addAttribute("pageList", pageList);
 		model.addAttribute("list", list); 
+		model.addAttribute("listCnt", listCnt);
+		
 		
 		return "main/member";
 	}
@@ -127,7 +137,7 @@ public class MainController extends SessionController{
 		params.put("start"		 , (page_no-1)*page_row);
 		params.put("page_row"	 , page_row);
 		
-		mainService.exam_download_excel(params, fileName, request, response);
+		mainService.download_excel(params, fileName, request, response);
 		return "";
 	}
 	
@@ -158,7 +168,10 @@ public class MainController extends SessionController{
 	public String securityPhone(Integer id, String passwd, String user_id, Integer user_no) throws Exception {
 		String result = "";
 		System.out.println(passwd);
-		if(passwd.equals("zxc123")) {
+		
+		Map<String, Object> params = adminDao.findById(ID);
+		
+		if(passwd.equals(params.get("user_pw"))) {
 			
 			result = mainDao.findByid(id);
 			

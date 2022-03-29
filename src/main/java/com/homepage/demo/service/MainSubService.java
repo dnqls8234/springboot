@@ -43,11 +43,23 @@ public class MainSubService {
 			HttpServletRequest request,
 			HttpServletResponse response
 		) throws Exception {
-		List<Map<String, Object>> results = mainSubDao.search(params);
+		List<Map<String, Object>> results = new ArrayList<Map<String,Object>>();
 		
+		Map<String, Object> sampleMap = new HashMap<String, Object>();
+		sampleMap.put("base","ex) 명칭");		
+		sampleMap.put("base_sub","ex) 명칭");		
+		sampleMap.put("agency","ex) 명칭");		
+		sampleMap.put("store","ex) 명칭");		
+		sampleMap.put("user_id","ex) test100");		
+		sampleMap.put("user_name","ex) 홍길동");		
+		sampleMap.put("user_phone","ex)  010-xxxx-xxxx");		
+		sampleMap.put("register_at","ex) 20xx-xx-xx xx:xx");		
+		sampleMap.put("buy_at","ex) 20xx-xx-xx xx:xx");		
+		results.add(sampleMap);
+		
+		results.addAll(mainSubDao.search(params));
 		String[][] headers = new String[][] {
 			new String[] {
-				"번호",
 				"본사",
 				"부본사",
 			    "대리점",
@@ -56,12 +68,11 @@ public class MainSubService {
 			    "이름",
 			    "연락처",
 			    "가입일",
-			    "최근 업데이트"
+			    "최근 구매일"
 			}
 		};
 		
 		String[] keys = new String[] {
-				"user_no",
 				"base",
 				"base_sub",
 				"agency",
@@ -70,7 +81,7 @@ public class MainSubService {
 				"user_name",
 				"user_phone",
 				"register_at",
-				"update_at"
+				"buy_at"
 				};
 		
 		File file = ExcelUtils.exportExcel(results, headers, keys);
@@ -107,20 +118,25 @@ public class MainSubService {
 				// row 탐색 for문
 				for (int rowIndex = 0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
 					// row 0은 헤더정보이기 때문에 무시
-					if (rowIndex != 0) {
+					if (rowIndex != 0 && rowIndex != 1) {
 						curRow = curSheet.getRow(rowIndex);
 						vo = new HashMap<String,Object>();
 						String value;
 
 						// row의 첫번째 cell값이 비어있지 않는 경우만 cell탐색
 						if (curRow.getCell(0) != null) {
-							if (!"".equals(curRow.getCell(0).getStringCellValue())) {
+							if (true) {
 								// cell 탐색 for문
 								for (int cellIndex = 0; cellIndex < curRow.getPhysicalNumberOfCells(); cellIndex++) {
 									curCell = curRow.getCell(cellIndex);
 
 									if (true) {
 										value = "";
+										
+										if(curCell == null) {
+											continue;
+										}
+										
 										// cell 스타일이 다르더라도 String으로 반환 받음
 										switch (curCell.getCellType()) {
 										case HSSFCell.CELL_TYPE_FORMULA:
@@ -153,36 +169,41 @@ public class MainSubService {
 
 										// 현재 colum index에 따라서 vo입력
 										switch (cellIndex) {
-										case 0: // No
-											vo.put("noid", value);
+										case 0: // 본사
+											vo.put("base", value);
 											break;
-										case 1: // 본사
-											vo.put("location", value);
+										case 1: // 부본사
+											vo.put("base_sub", value);
 											break;
-										case 2: // 아이디
-											vo.put("id", value);
+										case 2: // 대리점
+											vo.put("agency", value);
 											break;
-										case 3: // 이름
-											vo.put("name", value);
+										case 3: // 매장
+											vo.put("store", value);
 											break;
-										case 4: // 등급
-											vo.put("grade", value);
+										case 4: // 아이디
+											vo.put("user_id", value);
 											break;
-										case 5: // 연락처
-											vo.put("phone", value);
+										case 5: // 이름
+											vo.put("user_name", value);
 											break;
-										case 6: // 가입일
-											vo.put("register_at", value);
+										case 6: // 연락처
+											vo.put("user_phone", value);
 											break;
-										case 7: // 최근구매일
-											vo.put("recent_at", value);
+										case 7: // 가입일
+											if(value != null && !value.equals("") && !value.equals("false")) {
+											vo.put("register_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
 											break;
-										case 8: // 구매 상세내역
-											vo.put("detail", value);
+											} else {
+												break;
+											}
+										case 8: // 최근업데이트
+											if(value != null && !value.equals("") && !value.equals("false")) {
+											vo.put("buy_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
 											break;
-										case 9: // 최근업데이트
-											vo.put("update_at", value);
-											break;
+											} else {
+												break;
+											}
 										default:
 											break;
 										}
@@ -196,7 +217,7 @@ public class MainSubService {
 
 				}
 			}
-		} catch (IOException  e) {
+		} catch (IOException | ParseException  e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -231,7 +252,7 @@ public class MainSubService {
 				// row 탐색 for문
 				for (int rowIndex = 0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
 					// row 0은 헤더정보이기 때문에 무시
-					if (rowIndex != 0) {
+					if (rowIndex != 0 && rowIndex != 1) {
 						curRow = curSheet.getRow(rowIndex);
 						vo = new HashMap<String,Object>();
 						String value;
@@ -246,6 +267,11 @@ public class MainSubService {
 									if (true) {
 										value = "";
 										// cell 스타일이 다르더라도 String으로 반환 받음
+										
+										if(curCell == null) {
+											continue;
+										}
+										
 										switch (curCell.getCellType()) {
 										case HSSFCell.CELL_TYPE_FORMULA:
 											value = curCell.getCellFormula();
@@ -277,36 +303,41 @@ public class MainSubService {
 
 										// 현재 colum index에 따라서 vo입력
 										switch (cellIndex) {
-										case 0: // No
-											vo.put("noid", value);
-											break;
-										case 1: // 본사
+										case 0: // 본사
 											vo.put("base", value);
 											break;
-										case 2: // 아이디
+										case 1: // 부본사
+											vo.put("base_sub", value);
+											break;
+										case 2: // 대리점
+											vo.put("agency", value);
+											break;
+										case 3: // 매장
+											vo.put("store", value);
+											break;
+										case 4: // 아이디
 											vo.put("user_id", value);
 											break;
-										case 3: // 이름
+										case 5: // 이름
 											vo.put("user_name", value);
 											break;
-										case 4: // 등급
-											vo.put("user_grade", value);
-											break;
-										case 5: // 연락처
+										case 6: // 연락처
 											vo.put("user_phone", value);
 											break;
-										case 6: // 가입일
-											vo.put("register_at", value);
-											break;
-										case 7: // 최근구매일
-											vo.put("recent_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
-											break;
-										case 8: // 구매 상세내역
-											vo.put("detail", value);
-											break;
-										case 9: // 최근업데이트
-											vo.put("update_at", value);
-											break;
+										case 7: // 가입일
+											if(value != null && !value.equals("") && !value.equals("false")) {
+												vo.put("register_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
+												break;
+											} else {
+												break;
+											}
+										case 8: // 최근구매일
+											if(value != null && !value.equals("") && !value.equals("false")) {
+												vo.put("buy_at", CommonUtils.stringToDate(value.replaceAll(",", "-"), "yyyy-MM-dd HH:mm"));
+												break;
+											} else {
+												break;
+											}
 										default:
 											break;
 										}
@@ -320,10 +351,7 @@ public class MainSubService {
 
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		} catch (ParseException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 			return null;
 		}

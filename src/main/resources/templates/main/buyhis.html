@@ -15,7 +15,7 @@
 <div layout:fragment="content" >
 	<header>
 		<div class="nav_trigger"></div>
-		<a href="/">Coperation</a>
+		<a>Coperation</a>
 
 		<div class="info">
 				<div class="user" th:if="${user_type==100}">관리자</div>
@@ -46,7 +46,7 @@
 					<li class="drop_mene"><a href="membersub" class="icon-update">업데이트</a></li>
 					<li class="drop_mene"><a href="grade" class="icon-chart">등급설정</a></li>
 					<th:blcok th:if="${user_type == 100}">
-						<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-chart">관리자</a></li>
+						<li class="drop_mene"><a href="/adminManager/phoneLog" class="icon-member">관리자</a></li>
 						</th:blcok>
 				</ul>
 			</div>
@@ -132,9 +132,7 @@
 						</thead>
 						<th:block th:if="${list != null}">
 							<tr th:each="result, index : ${list}">
-								<td th:text="${result.get('user_no')}">
-										<span ></span>
-									</td>
+								<td><span th:text="${listCnt - (index.index + pageCnt)}"></span></td>
 									<td>
 										<span th:text="${result.get('base')}"></span>
 									</td>

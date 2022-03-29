@@ -5,86 +5,81 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" th:src="@{/STATIC/js/common.js}"></script>
-	<script type="text/javascript" th:src="@{/STATIC/js/swiper-bundle.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" th:src="@{/STATIC/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/STATIC/js/swiper-bundle.min.js}"></script>
 
-	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/jquery.datetimepicker.min.css}"/>
-	<script type="text/javascript" th:src="@{/STATIC/js/jquery.datetimepicker.full.min.js}"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/STATIC/css/jquery.datetimepicker.min.css}" />
+<script type="text/javascript"
+	th:src="@{/STATIC/js/jquery.datetimepicker.full.min.js}"></script>
 
-	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/swiper-bundle.min.css}"/>
-	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/style.css}"/>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/STATIC/css/swiper-bundle.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/STATIC/css/style.css}" />
 </head>
 <script type="text/javascript">
-var login = function(){
-	
-	var id = $('#user_id').val();
-    var pwd = $('#user_pw').val();
+	var login = function() {
 
-//     if (id == '') {
-//         alert('로그인 아이디를 입력하세요');
-//         $('#login_id').focus();
-//         return false;
-//     }
+		var id = $('#user_id').val();
+		var pwd = $('#user_pw').val();
 
-//     if (pwd == '') {
-//         alert('로그인 비밀번호를 입력하세요');
-//         $('#login_pwd').focus();
-//         return false;
-//     }
+		//     if (id == '') {
+		//         alert('로그인 아이디를 입력하세요');
+		//         $('#login_id').focus();
+		//         return false;
+		//     }
 
-//     if (/[\s]/g.test(id)) {
-//         alert('비밀번호에 공백이 있습니다.');
-//         $('#login_pwd').focus();
-//         return false;
-//     }
-    
-	$.ajax(
-	        {
-	            type: 'POST',
-	            url: '/login/login',
-	            data: {
-	                user_id: id,
-	                user_pw: pwd
-	            },
-	            success: function (data) {
-	                if (data.login_success) {
-	                    window.location.href = getBaseUrl() + '/member';
-	                } else {
-	                    if(data.error_msg) {
-	                        alert(data.error_msg);
-	                    } else {
-	                        alert("로그인 아이디 또는 비밀번호가 맞지 않습니다.");
-	                    }
-	                }
-	            }
-	        }
-	    );
-	
-}
+		//     if (pwd == '') {
+		//         alert('로그인 비밀번호를 입력하세요');
+		//         $('#login_pwd').focus();
+		//         return false;
+		//     }
 
-function getBaseUrl() {
-	var pathArray = location.href.split('/');
-	var protocol = pathArray[0];
-	var domain = pathArray[2];
+		//     if (/[\s]/g.test(id)) {
+		//         alert('비밀번호에 공백이 있습니다.');
+		//         $('#login_pwd').focus();
+		//         return false;
+		//     }
 
-	var url = protocol + '//' + domain;
+		$.ajax({
+			type : 'POST',
+			url : '/login/login',
+			data : {
+				user_id : id,
+				user_pw : pwd
+			},
+			success : function(data) {
+				if (data.login_success) {
+					window.location.href = getBaseUrl() + '/member';
+				} else {
+					if (data.error_msg) {
+						alert(data.error_msg);
+					} else {
+						alert("로그인 아이디 또는 비밀번호가 맞지 않습니다.");
+					}
+				}
+			}
+		});
 
-	return url;
-}
+	}
 
+	function getBaseUrl() {
+		var pathArray = location.href.split('/');
+		var protocol = pathArray[0];
+		var domain = pathArray[2];
 
+		var url = protocol + '//' + domain;
 
+		return url;
+	}
 </script>
 <body>
-<header>
+	<header>
 		<div class="nav_trigger"></div>
 		<a href="/">Coperation</a>
-
-		<div class="info">
-			<div class="user"></div>
-			<div class="settiong"></div>
-		</div>
 	</header>
 
 	<div class="container">
@@ -94,42 +89,39 @@ function getBaseUrl() {
 				<input type="" name="" class="inp-search" placeholder="입력후 엔터">
 			</div>
 			<div class="page-nav">
-				<a href="" class="home">Home</a>
+				<a href="/" class="home">Home</a>
 			</div>
 		</div>
 
 
 		<div class="desc-contents">
-			
-			<div class="title-box">
-				<h5 class="title">등급설정</h5>
-				<div class="screen-ctl">
-					<div class="fullscreen" onclick="openFullscreen()"></div>
-					<div class="reload" onclick="location.reload();"></div>
-					<div class="arrow_alt"></div>
-				</div>
-			</div>
-
 			<div class="contents">
+			
 				<div class="admin_wrap">
-					<p class="title">로그인</p>
-						
+					<p class="title">
+					<h1>로그인</h1>
+					</p>
+
 					<div class="box">
-					<div class="input-box">
-						<label>아이디</label>	
-						<input type="text" name="user_id" id="user_id" style="width: 200px">
-					</div>
-					<div class="input-box">
-						<label>비밀번호</label>
-						<input type="password" name="user_pw" id="user_pw">
-					</div>
-					<input type="button" onclick="login()" value="로그인"> 
+						<div class="input-box">
+							<label>아이디</label> <input type="text" name="user_id" id="user_id"
+								style="width: 200px; margin-left: 13px">
+						</div>
+						<div class="input-box">
+							<label>비밀번호</label> <input type="password" name="user_pw"
+								id="user_pw">
+						</div>
+						<div class="btn-box">
+							<input type="button" onclick="login()" value="로그인">
+						</div>
 					</div>
 				</div>
-
+				
 			</div>
 		</div>
+		
 	</div>
 
 </body>
+
 </html>

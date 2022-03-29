@@ -21,7 +21,7 @@ function checkFileType(filePath) {
 		var fileFormat = file.split(".");
 		var fileType = fileFormat[1];
 		if (confirm("업로드 하시겠습니까?")) {
-			$("#excelUpForm").attr("action", "compExcelUpload");
+			$("#excelUpForm").attr("action", "/membersub/compExcelUpload");
 			var options = {
 				success : function(data) {
 					alert(data);
@@ -182,66 +182,66 @@ function checkFileType(filePath) {
 	};
 
 	$(document).ready(function() {
-		$('span[class=scphone]').each(function() {
-			var text = $(this).text();
-			text = text.substr(0, text.length - 2) + '**';
-
-			$(this).text(text);
-		});
-
-		$("#modal_check_btn").click(function() {
-			$("#modal").css("display", "none");
-			checkPasswd();
-		});
-		
-		$("#modal_layer").click(function(){
-			$("#modal").css("display", "none");
-		})
+//		$('span[class=scphone]').each(function() {
+//			var text = $(this).text();
+//			text = text.substr(0, text.length - 2) + '**';
+//
+//			$(this).text(text);
+//		});
+//
+//		$("#modal_check_btn").click(function() {
+//			$("#modal").css("display", "none");
+//			checkPasswd();
+//		});
+//		
+//		$("#modal_layer").click(function(){
+//			$("#modal").css("display", "none");
+//		})
 		
 	})
 
-	var show = function(e, id) {
-
-		$("#modal").css("display", "block");
-
-		$("#phoneRow").val(e);
-		$("#phoneUserNo").val(id);
-
-	}
-
-	var checkPasswd = function() {
-
-		var e = $("#phoneRow").val();
-		var id = $("#phoneUserNo").val();
-		var passwd = $("#passwd").val();
-		var user_id = $("input[name='user_id']").val();
-		var user_no = $("input[name='user_no']").val();
-
-		$.ajax({
-			method : 'POST',
-			url : '/membersub/securityPhone',
-			data : {
-				id : id,
-				passwd : passwd,
-				user_id : user_id,
-				user_no : user_no
-			},
-			success : function(data) {
-				$("#scphone" + e).text(data);
-				$("#phoneRow").val('');
-				$("#phoneUserNo").val('');
-				$("#passwd").val('');
-			},
-			error : function(data) {
-				$("#phoneRow").val('');
-				$("#phoneUserNo").val('');
-				$("#passwd").val('');
-				alert("비밀번호가 잘못되었습니다.");
-			}
-
-		})
-
-	}
+//	var show = function(e, id) {
+//
+//		$("#modal").css("display", "block");
+//
+//		$("#phoneRow").val(e);
+//		$("#phoneUserNo").val(id);
+//
+//	}
+//
+//	var checkPasswd = function() {
+//
+//		var e = $("#phoneRow").val();
+//		var id = $("#phoneUserNo").val();
+//		var passwd = $("#passwd").val();
+//		var user_id = $("input[name='user_id']").val();
+//		var user_no = $("input[name='user_no']").val();
+//
+//		$.ajax({
+//			method : 'POST',
+//			url : '/membersub/securityPhone',
+//			data : {
+//				id : id,
+//				passwd : passwd,
+//				user_id : user_id,
+//				user_no : user_no
+//			},
+//			success : function(data) {
+//				$("#scphone" + e).text(data);
+//				$("#phoneRow").val('');
+//				$("#phoneUserNo").val('');
+//				$("#passwd").val('');
+//			},
+//			error : function(data) {
+//				$("#phoneRow").val('');
+//				$("#phoneUserNo").val('');
+//				$("#passwd").val('');
+//				alert("비밀번호가 잘못되었습니다.");
+//			}
+//
+//		})
+//
+//	}
 	
 	
 	$(function(){

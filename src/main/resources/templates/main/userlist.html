@@ -16,7 +16,7 @@
 
 	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/swiper-bundle.min.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/STATIC/css/style.css}"/>
-	<script th:src="@{/javascripts/main.js}"></script>
+	<script th:src="@{/javascripts/paging.js}"></script>
 <style type="text/css">
 
 #css_tabs {
@@ -54,15 +54,15 @@
 }
 /* 선택된 라벨, 커서를 올린 라벨 스타일 지정 */
 #css_tabs input:nth-of-type(1):checked ~ label:nth-of-type(1), #css_tabs > label[for=tab1]:hover {
-    background:tomato;
+    background:#00aaff;
     color:#fff
 }
 #css_tabs input:nth-of-type(2):checked ~ label:nth-of-type(2), #css_tabs > label[for=tab2]:hover {
-    background:gold;
+    background:#00aaff;
     color:#fff
 }
 #css_tabs input:nth-of-type(3):checked ~ label:nth-of-type(3), #css_tabs > label[for=tab3]:hover {
-    background:green;
+    background:#00aaff;
     color:#fff
 }
 /* 실제 내용이 담긴 div 요소 스타일 지정 */
@@ -78,7 +78,7 @@
 <body>
 	<header>
 		<div class="nav_trigger"></div>
-		<a href="/">Coperation</a>
+		<a>Coperation</a>
 
 		<div class="info">
 				<div class="user" th:if="${user_type==100}">관리자</div>
@@ -132,6 +132,31 @@
 
 			<div class="contents">
 				<div class="data-table-wrap">
+						<form action="/adminManager/userList" method="post" id="paging">
+						<input	type="hidden" name="page_no" th:value="${param.page_no}">
+							<ul class="pagenate">
+									<li class="page-next" th:data-no="${param.page_no}"
+										th:onclick="paging(this.getAttribute('data-no'),'pre')"></li>
+									<th:block th:each="result, index : ${pageList}">
+										<li
+											th:class="${#strings.equals(#strings.isEmpty(param.page_no) ? 1 : param.page_no  ,result)} ? 'active' : ''"
+											th:onclick="|paging(${result},${result})|"
+											th:text="${result}"></li>
+									</th:block>
+									<li class="page-prev" th:data-no="${param.page_no}"
+										th:onclick="paging(this.getAttribute('data-no'),'next')"></li>
+								</ul>
+
+								<select name="page_row" onchange="paging()">
+									<option value="30"
+										th:selected="${#strings.equals(param.page_row, '30')}">30</option>
+									<option value="50"
+										th:selected="${#strings.equals(param.page_row, '50')}">50</option>
+									<option value="100"
+										th:selected="${#strings.equals(param.page_row, '100')}">100</option>
+								</select>
+						</form>
+						<br>
 						<table class="data-table buy-his-list sort-list" id="inventory">
 							<thead>
 								<tr>

@@ -26,5 +26,10 @@ public class MainSubDao extends DefualtRepository{
 		
 		return getSqlSession().selectList("mainDaoSub.search", params);
 	}
+
+	public Integer searchCnt(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("mainDaoSub.searchCnt",params);
+	}
 	
 }

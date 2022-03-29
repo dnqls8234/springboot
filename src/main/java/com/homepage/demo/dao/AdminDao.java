@@ -29,14 +29,24 @@ public class AdminDao extends DefualtRepository{
 		return getSqlSession().selectOne("AdminDao.insertUser", params);
 	}
 
-	public List<Map<String, Object>> findUserList() {
+	public List<Map<String, Object>> findUserList(Map<String, Object> params) {
 
-		return getSqlSession().selectList("AdminDao.findUserList");
+		return getSqlSession().selectList("AdminDao.findUserList", params);
 	}
 	
-	public List<Map<String, Object>> findPhoneLog() {
+	public List<Map<String, Object>> findPhoneLog(Map<String, Object> params) {
 
-		return getSqlSession().selectList("AdminDao.findPhoneLog");
+		return getSqlSession().selectList("AdminDao.findPhoneLog", params);
+	}
+
+	public Integer findPhoneLogCnt(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AdminDao.findPhoneLogCnt", params);
+	}
+
+	public Integer findUserListCnt(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AdminDao.findUserListCnt", params);
 	}
 
 }

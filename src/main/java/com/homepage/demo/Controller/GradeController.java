@@ -38,6 +38,8 @@ public class GradeController extends SessionController{
 			@RequestParam(required = false) Integer buyFif
 			) {
 		
+		System.out.println(dateFir);
+		
 		Map<String,Object> gradeList = new HashMap<String, Object>(); 
 		
 		gradeList.put("dateFir",dateFir);
@@ -53,6 +55,6 @@ public class GradeController extends SessionController{
 		
 		gradeservice.updateGrade(gradeList);
 		
-		return "main/grade";
+		return "redirect:/grade";
 	}
 }

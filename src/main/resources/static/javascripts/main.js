@@ -21,7 +21,7 @@ function checkFileType(filePath) {
 		var fileFormat = file.split(".");
 		var fileType = fileFormat[1];
 		if (confirm("업로드 하시겠습니까?")) {
-			$("#excelUpForm").attr("action", "compExcelUpload");
+			$("#excelUpForm").attr("action", "/member/compExcelUpload");
 			var options = {
 				success : function(data) {
 					alert(data);

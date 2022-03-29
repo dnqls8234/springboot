@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository   
 public class MainDao extends DefualtRepository{
 	
 	public String findByid(Integer id) {
@@ -25,6 +25,11 @@ public class MainDao extends DefualtRepository{
 	public List<Map<String, Object>> search(Map<String, Object> params) {
 		
 		return getSqlSession().selectList("mainDao.search", params);
+	}
+
+	public Integer searchCnt(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("mainDao.searchCnt", params);
 	}
 	
 }

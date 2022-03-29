@@ -58,6 +58,8 @@ public class PurchaseController extends SessionController{
 		if(page_row == null) page_row = 30;
 		if(page_no == null) page_no = 1; 
 		
+		model.addAttribute("pageCnt", (page_no-1)*page_row);
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		if(select_date != null) {
@@ -76,6 +78,9 @@ public class PurchaseController extends SessionController{
 		System.out.println(params);
 		
 		list = purchaseDao.getPurchases(params);
+		
+		Integer listCnt = purchaseDao.searchCnt(params);
+		
 		page_no = (page_no-1)/10;
 		System.out.println(list);
 		List<Integer> pageList = new ArrayList<Integer>();
@@ -85,6 +90,8 @@ public class PurchaseController extends SessionController{
 		
 		model.addAttribute("pageList", pageList);
 		model.addAttribute("list", list); 
+		model.addAttribute("listCnt", listCnt); 
+		
 		
 		return "main/buyhis";
 	}
