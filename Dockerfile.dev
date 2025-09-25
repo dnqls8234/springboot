@@ -1,0 +1,59 @@
+# Development Dockerfile with faster builds
+FROM gradle:8.5-jdk21-alpine AS build
+
+# Create gradle cache directory
+ARG GRADLE_USER_HOME=/gradle-cache
+ENV GRADLE_USER_HOME=${GRADLE_USER_HOME}
+
+# Set working directory
+WORKDIR /app
+
+# Copy gradle files for dependency caching
+COPY build.gradle.kts settings.gradle.kts gradle.properties ./
+
+# Download dependencies (this layer will be cached)
+RUN gradle dependencies --no-daemon
+
+# Copy source code
+COPY src ./src
+
+# Build the application
+RUN gradle build -x test --no-daemon
+
+# Runtime stage
+FROM openjdk:21-jdk-slim
+
+# Install development tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    netcat-traditional \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app user
+RUN groupadd -r ums && useradd -r -g ums ums
+
+# Set working directory
+WORKDIR /app
+
+# Copy the built JAR from build stage
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# Change ownership to app user
+RUN chown -R ums:ums /app
+
+# Switch to app user
+USER ums
+
+# Expose ports
+EXPOSE 8080 5005
+
+# Set JVM options for development
+ENV JAVA_OPTS="-XX:+UseContainerSupport \
+    -XX:MaxRAMPercentage=75.0 \
+    -XX:+UnlockExperimentalVMOptions \
+    -XX:+UseG1GC \
+    -Djava.security.egd=file:/dev/./urandom \
+    -Dspring.devtools.restart.enabled=true"
+
+# Run the application
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

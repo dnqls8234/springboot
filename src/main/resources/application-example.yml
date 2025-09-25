@@ -1,0 +1,167 @@
+# UMS Service Configuration Example
+# Copy this file to application-dev.yml or application-prod.yml and update values
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ums-service
+
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ums
+    username: postgres
+    password: your_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+
+  # Redis Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      timeout: 60s
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9093
+    consumer:
+      group-id: ums-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  # Email Configuration (Spring Mail)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your_email@gmail.com
+    password: your_app_password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# UMS Service Configuration
+ums:
+  # SMS Configuration
+  sms:
+    # Provider selection: SOLAPI (default), TWILIO, or leave empty for auto-selection
+    provider: SOLAPI
+    # Enable fallback to other providers if the preferred one fails
+    enable-fallback: true
+    # Preferred provider (optional) - will be tried first
+    preferred-provider:
+
+    # Solapi (CoolSMS) Configuration - Default SMS Provider
+    solapi:
+      enabled: true
+      api-key: your_solapi_api_key
+      api-secret: your_solapi_api_secret
+      from-number: "01012345678"
+      api-url: https://api.solapi.com
+
+    # Twilio Configuration - Alternative SMS Provider
+    twilio:
+      enabled: false
+      account-sid: your_twilio_account_sid
+      auth-token: your_twilio_auth_token
+      from-number: "+1234567890"
+      api-url: https://api.twilio.com
+
+    # Legacy configuration (for backward compatibility)
+    api-key: ${ums.sms.solapi.api-key}
+    api-secret: ${ums.sms.solapi.api-secret}
+    from-number: ${ums.sms.solapi.from-number}
+
+  # Email Configuration
+  email:
+    # Provider selection: SMTP (default), SENDGRID, or leave empty for auto-selection
+    provider: SMTP
+    # Enable fallback to other providers if the preferred one fails
+    enable-fallback: true
+    # Preferred provider (optional)
+    preferred-provider:
+
+    # SMTP Configuration - Default Email Provider
+    smtp:
+      enabled: true
+      from-email: noreply@yourdomain.com
+      from-name: Your Service Name
+
+    # SendGrid Configuration - Alternative Email Provider
+    sendgrid:
+      enabled: false
+      api-key: your_sendgrid_api_key
+      from-email: noreply@yourdomain.com
+      from-name: Your Service Name
+      api-url: https://api.sendgrid.com
+
+    # Legacy configuration (for backward compatibility)
+    from-email: ${ums.email.smtp.from-email}
+    from-name: ${ums.email.smtp.from-name}
+
+  # FCM Push Notification Configuration
+  fcm:
+    server-key: your_fcm_server_key
+    project-id: your_firebase_project_id
+
+  # Kakao AlimTalk Configuration
+  kakao:
+    api-key: your_kakao_api_key
+    sender-key: your_sender_key
+    api-url: https://api.kakaowork.com
+
+  # Rate Limiting
+  rate-limit:
+    default-per-hour: 1000
+    default-per-day: 10000
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.mindshift.ums: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: WARN
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info
+  endpoint:
+    health:
+      show-details: always
+
+# ---
+# Provider Priority Guide:
+# Higher priority providers are tried first when auto-selecting
+#
+# SMS Providers:
+#   - Twilio: Priority 10 (highest)
+#   - Solapi: Priority 5 (default)
+#
+# Email Providers:
+#   - SendGrid: Priority 10 (highest)
+#   - SMTP: Priority 1 (lowest, default)
+#
+# To force a specific provider, set the 'provider' field
+# To enable automatic failover, set 'enable-fallback: true'
+# ---

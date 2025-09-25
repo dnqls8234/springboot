@@ -1,0 +1,29 @@
+# Development override for docker-compose
+# This file is automatically loaded by docker-compose
+version: '3.8'
+
+services:
+  ums-service:
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./src:/app/src:ro
+      - ./build.gradle.kts:/app/build.gradle.kts:ro
+    environment:
+      # Development specific settings
+      - SPRING_PROFILES_ACTIVE=docker,dev
+      - LOGGING_LEVEL_COM_MINDSHIFT_UMS=DEBUG
+      - UMS_RATE_LIMIT_ENABLED=false
+      - UMS_SECURITY_HMAC_ENABLED=false
+    # Override build for development
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        - GRADLE_USER_HOME=/gradle-cache
+    # Enable debugging
+    ports:
+      - "8080:8080"
+      - "5005:5005"  # Debug port
+    command: >
+      sh -c "java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+             $$JAVA_OPTS -jar app.jar"

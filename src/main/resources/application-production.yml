@@ -1,0 +1,141 @@
+spring:
+  application:
+    name: ums-service
+  profiles:
+    active: production
+
+  # Database optimization for production
+  datasource:
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 20
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+      validation-timeout: 5000
+
+  # JPA optimization for production
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+          batch_versioned_data: true
+          fetch_size: 100
+        order_inserts: true
+        order_updates: true
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+        generate_statistics: false
+
+  # Redis optimization for production
+  data:
+    redis:
+      lettuce:
+        pool:
+          max-active: 50
+          max-idle: 20
+          min-idle: 5
+          max-wait: -1ms
+        shutdown-timeout: 100ms
+      timeout: 2000ms
+      connect-timeout: 2000ms
+
+  # Kafka optimization for production
+  kafka:
+    producer:
+      acks: 1
+      retries: 3
+      batch-size: 32768
+      linger-ms: 10
+      buffer-memory: 67108864
+      compression-type: lz4
+      enable-idempotence: true
+      max-in-flight-requests-per-connection: 5
+
+# Server optimization
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 20
+    max-connections: 8192
+    accept-count: 100
+    connection-timeout: 20000
+
+# Logging configuration for production
+logging:
+  level:
+    root: INFO
+    com.mindshift.ums: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: ERROR
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/ums/ums-service.log
+    max-size: 100MB
+    max-history: 30
+
+# Management and monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+    metrics:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# UMS specific configuration
+ums:
+  async:
+    core-pool-size: 20
+    max-pool-size: 100
+    queue-capacity: 500
+    thread-name-prefix: "ums-async-"
+
+  rate-limit:
+    enabled: true
+    redis-key-prefix: "ums:rate_limit:"
+
+  security:
+    hmac:
+      enabled: true
+      clock-skew-minutes: 5
+
+  cache:
+    ttl:
+      template: 7200 # 2 hours
+      tenant: 1800   # 30 minutes
+      rate-limit: 60 # 1 minute
+
+  monitoring:
+    metrics:
+      enabled: true
+    health-check:
+      enabled: true
+
+  performance:
+    batch:
+      size: 50
+      timeout-ms: 5000
+    connection:
+      timeout-ms: 30000
+      read-timeout-ms: 60000
+    retry:
+      max-attempts: 3
+      backoff-ms: 1000

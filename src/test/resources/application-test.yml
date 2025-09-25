@@ -1,0 +1,83 @@
+spring:
+  application:
+    name: ums-service-test
+
+  datasource:
+    # Will be overridden by Testcontainers
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: false
+        format_sql: false
+
+  data:
+    redis:
+      # Will be overridden by Testcontainers
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+
+  kafka:
+    # Disabled for unit tests
+    bootstrap-servers: localhost:9999
+
+  flyway:
+    enabled: false
+
+  mail:
+    host: localhost
+    port: 2525
+    username: test
+    password: test
+
+# Test-specific UMS configuration
+ums:
+  security:
+    hmac:
+      enabled: false
+      time-window: 300
+
+  rate-limit:
+    enabled: false
+
+  retry:
+    max-attempts: 1
+    initial-delay: 100
+    max-delay: 1000
+
+  # Disable external providers for tests
+  kakao:
+    api-key: test-kakao-key
+    sender-key: test-sender-key
+    api-url: http://localhost:8080/mock-kakao
+
+  sms:
+    api-key: test-sms-key
+    from-number: 15880000
+    api-url: http://localhost:8080/mock-sms
+
+  email:
+    from-email: test@example.com
+    from-name: Test Service
+
+  fcm:
+    server-key: test-fcm-key
+    project-id: test-project
+
+# Logging configuration for tests
+logging:
+  level:
+    com.mindshift.ums: DEBUG
+    org.springframework.web: WARN
+    org.hibernate: WARN
+    org.testcontainers: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

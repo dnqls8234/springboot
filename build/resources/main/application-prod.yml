@@ -1,0 +1,45 @@
+spring:
+  profiles: prod
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    hikari:
+      maximum-pool-size: 50
+
+  data:
+    redis:
+      cluster:
+        nodes: ${REDIS_CLUSTER_NODES}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_CLUSTER_SERVERS}
+    producer:
+      compression-type: snappy
+
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+
+logging:
+  level:
+    com.mindshift.ums: INFO
+    root: WARN
+
+ums:
+  sandbox:
+    enabled: false
+
+  security:
+    hmac:
+      enabled: true
+
+  rate-limit:
+    enabled: true
+
+management:
+  endpoint:
+    health:
+      show-details: never
